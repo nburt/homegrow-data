@@ -69,6 +69,6 @@ post '/environments' do
       }
     )
 
-    {}
+    {}.to_json
   end
 end
