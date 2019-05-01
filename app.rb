@@ -23,9 +23,9 @@ end
 
 get '/environments' do
   client = settings.mongo_db.client
-  start_timestamp = params[:start_timestamp] || (Time.now - 24 * 60 * 60).to_i
+  start_timestamp = params[:start_timestamp] || (Time.now - 24 * 60 * 60)
   start_timestamp = Time.at(start_timestamp.to_i)
-  end_timestamp = params[:end_timestamp] || Time.now.to_i
+  end_timestamp = params[:end_timestamp] || Time.now
   end_timestamp = Time.at(end_timestamp.to_i)
 
   result = client[:environments].find(
@@ -40,9 +40,9 @@ get '/environments' do
         '$lte' => end_timestamp.to_i,
       }
     }
-  ).projection({environments: 1}).to_a.first
+  ).projection({environments: 1}).to_a
 
-  result['environments'].select do |environment|
+  result.map {|r| r['environments']}.flatten.select do |environment|
     time = Time.at(environment['timestamp'])
     time >= start_timestamp && time <= end_timestamp
   end.to_json
