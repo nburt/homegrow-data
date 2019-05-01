@@ -14,8 +14,6 @@ before do
 
   auth_token = params[:auth_token]
 
-  puts auth_token
-  puts ENV['AUTHENTICATION_TOKEN']
   if auth_token != ENV['AUTHENTICATION_TOKEN']
     halt(404, {}.to_json)
   end
