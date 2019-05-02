@@ -38,7 +38,7 @@ get '/environments' do
         '$lte' => end_timestamp.to_i,
       }
     }
-  ).projection({environments: 1}).to_a
+  ).sort({hour: 1}).projection({environments: 1}).to_a
 
   result.map {|r| r['environments']}.flatten.select do |environment|
     time = Time.at(environment['timestamp'])
